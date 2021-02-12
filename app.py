@@ -1,9 +1,10 @@
 from flask import Flask, jsonify, request
-# from importlib.metadata import version
-import os
-app = Flask(__name__)
+from importlib.metadata import version
 
-# initialize model.
+app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False
+
+# initialize and load model.
 from NERDA.precooked import DA_ELECTRA_DA
 model = DA_ELECTRA_DA()
 model.load_network()
@@ -12,9 +13,9 @@ model.load_network()
 def home():
     return "NERDA prediction service"
 
-#@app.route('/version/')
-#def version():
-#    return f'NERDA version: {version("NERDA")}'
+@app.route('/version/')
+def vrs():
+    return f'NERDA version: {version("NERDA")}'
 
 @app.route('/predict/', methods=['POST'])
 def predict():
